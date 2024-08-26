@@ -1,22 +1,16 @@
 import React from 'react';
+import './board.css'; // Import CSS specific to the board
 
 function Cell({ value, isMyBoard, onClick }) {
-    const animationClass = value.hit
-      ? value.ship
-        ? 'animate__animated animate__shakeX'
-        : 'animate__animated animate__bounceIn'
-      : '';
-  
-      return (
-        <div
-          className={`p-2 border text-center ${isMyBoard ? 'bg-light' : value.hit ? (value.ship ? 'bg-danger ship-hit' : 'bg-info water-splash') : 'bg-primary'}`}
-          style={{ width: '40px', height: '40px', cursor: isMyBoard ? 'default' : 'pointer' }}
-          onClick={onClick}
-        >
-          {value.hit && isMyBoard ? '🚢' : ''}
-        </div>
-      );
-  }
-  
+  return (
+    <div
+      className={`cell ${isMyBoard ? 'my-board' : value.hit ? (value.ship ? 'hit-ship' : 'miss') : 'enemy-board'}`}
+      onClick={onClick}
+    >
+      {isMyBoard && value.ship && value.hit ? '🚢' : ''}
+      {!isMyBoard && value.hit && (value.ship ? '💥' : '💦')}
+    </div>
+  );
+}
 
 export default Cell;

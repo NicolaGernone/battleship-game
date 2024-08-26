@@ -1,49 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import GameHistoryDropdown from '../components/GameHistoryDropdown';
+import { fetchUserProfile } from '../services/api';
 import NewGameButton from '../components/NewGameButton';
+import GameHistoryDropdown from '../components/GameHistoryDropdown';
+import { useHistory } from 'react-router-dom';
 
 function ProfilePage() {
-  const [userData, setUserData] = useState({});
-  const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
+  const history = useHistory();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(process.env.REACT_APP_API_URL + '/user/profile', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setUserData(response.data);
-      } catch (error) {
-        console.error('Error fetching profile data', error);
-      }
-    };
-    fetchData();
+    async function getUserData() {
+      const data = await fetchUserProfile();
+      setUserData(data);
+    }
+    getUserData();
   }, []);
 
-  const handleNewGame = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post(process.env.REACT_APP_API_URL + '/game/start', {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      navigate(`/game/${response.data.gameId}`);
-    } catch (error) {
-      console.error('Error starting new game', error);
-    }
+  const handleNewGame = () => {
+    history.push('/game/new');
   };
 
+  if (!userData) return <div>Loading...</div>;
+
   return (
-    <div className="container mt-5">
+    <div className="profile-page container">
       <h1 className="text-center">Welcome, {userData.name}</h1>
-      <div className="d-flex justify-content-center mt-4">
-        <NewGameButton onClick={handleNewGame} />
-      </div>
-      <div className="d-flex justify-content-center mt-4">
-        <GameHistoryDropdown games={userData.games} />
-      </div>
+      <NewGameButton onClick={handleNewGame} />
+      <GameHistoryDropdown games={userData.games} />
     </div>
   );
 }

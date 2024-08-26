@@ -1,22 +1,12 @@
 version: '3.8'
 
 services:
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  battleship-game:
+    build: .
     ports:
-      - '3000:3000'
-    env_file:
-      - .env
+      - "3000:3000"
     environment:
       - REACT_APP_API_URL=${REACT_APP_API_URL}
-    depends_on:
-      - backend
-
-  backend:
-    image: your-backend-image
-    ports:
-      - '5050:5050'
-    env_file:
-      - .env
+    volumes:
+      - .:/app
+      - /app/node_modules

@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import LoginForm from '../components/LoginForm';
+import { useHistory } from 'react-router-dom';
 
 function LoginPage() {
-  return (
-    <div>
-      <LoginForm />
-    </div>
-  );
+  const history = useHistory();
+
+  const handleLoginSuccess = (user) => {
+    history.push('/profile');
+  };
+
+  return <LoginForm onLoginSuccess={handleLoginSuccess} />;
 }
 
 export default LoginPage;

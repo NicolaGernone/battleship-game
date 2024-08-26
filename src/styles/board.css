@@ -1,0 +1,50 @@
+.board {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 2px;
+  }
+  
+  .board-row {
+    display: contents;
+  }
+  
+  .cell {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: lightblue;
+    border: 1px solid #000;
+    transition: background-color 0.3s ease;
+  }
+  
+  .cell.my-board.ship {
+    background-color: grey;
+  }
+  
+  .cell.hit-ship {
+    background-color: red;
+    animation: hitAnimation 0.5s ease;
+  }
+  
+  .cell.miss {
+    background-color: white;
+  }
+  
+  @keyframes hitAnimation {
+    0% {
+      background-color: red;
+    }
+    50% {
+      background-color: darkred;
+    }
+    100% {
+      background-color: red;
+    }
+  }
+  
+  .cell:hover {
+    cursor: pointer;
+  }
+  
