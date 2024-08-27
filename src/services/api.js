@@ -11,14 +11,15 @@ const API_URL = process.env.REACT_APP_API_URL;
  * @returns {Object} The response from the server, typically containing a token.
  */
 export const loginUser = async (username, password) => {
-  const response = await fetch(`${API_URL}/login/`, {
+  const response = await fetch(`${API_URL}/users/login/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+
     },
     body: JSON.stringify({ username, password }),
   });
-
+  
   if (!response.ok) {
     throw new Error('Failed to log in');
   }
@@ -61,6 +62,21 @@ export const fetchUsers = async () => {
 
   if (!response.ok) {
     throw new Error('Failed to fetch users');
+  }
+
+  return response.json();
+};
+
+/**
+ * Fetches the user profile.
+ * @param {number} user_id - The ID of the user.
+ * @returns {Object} user profile.
+ */
+export const fetchUserProfile = async (userId) => {
+  const response = await fetch(`${API_URL}/users/${userId}`);
+
+  if (!response.ok) {
+      throw new Error('Failed to fetch user profile');
   }
 
   return response.json();

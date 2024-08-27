@@ -1,52 +1,28 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { loginUser } from '../services/api';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import LoginForm from '../components/LoginForm';
+import SignupForm from '../components/SignupForm';
 
 function LoginPage() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const userData = await loginUser(username, password);
-      // Save user data (e.g., token) to local storage or context if needed
-      localStorage.setItem('user', JSON.stringify(userData));
-      history.push('/profile');
-    } catch (error) {
-      alert('Login failed. Please check your credentials.');
-    }
+  const handleLoginSuccess = (userData) => {
+    localStorage.setItem('user', JSON.stringify(userData));
+    navigate('/profile'); 
+  };
+
+  const handleSignupSuccess = (userData) => {
+    localStorage.setItem('user', JSON.stringify(userData));
+    navigate('/profile'); 
   };
 
   return (
-    <div className="login-page container">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div className="form-group">
-          <label>Username</label>
-          <input
-            type="text"
-            className="form-control"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Password</label>
-          <input
-            type="password"
-            className="form-control"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Login
-        </button>
-      </form>
+    <div className="login-page container d-flex flex-column align-items-center justify-content-center">
+      <h2>Signup</h2>
+      <SignupForm onSubmit={handleSignupSuccess} />
+      <h2> or Login</h2>
+      <LoginForm onSubmit={handleLoginSuccess} />
+      
     </div>
   );
 }

@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { fetchUserProfile, createGame } from '../services/api';
 import NewGameButton from '../components/NewGameButton';
 import GameHistoryDropdown from '../components/GameHistoryDropdown';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import LoginForm from '../components/LoginForm';
 
 function ProfilePage() {
   const [userData, setUserData] = useState(null);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getUserData = async () => {
@@ -27,19 +28,33 @@ function ProfilePage() {
   const handleNewGame = async () => {
     try {
       const newGame = await createGame(userData.username, 'Player 2');
-      history.push(`/game/${newGame.id}`);
+      navigate(`/game/${newGame.id}`);
     } catch (error) {
       alert('Failed to start a new game.');
     }
   };
 
-  if (!userData) return <div>Loading...</div>;
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    navigate('/login'); // Redirect to login page after logout
+  };
 
-  return (
+  const handleLoginSuccess = (userData) => {
+    localStorage.setItem('user', JSON.stringify(userData));
+    navigate('/profile'); 
+  };
+
+  return userData ? (
     <div className="profile-page container">
       <h1 className="text-center">Welcome, {userData.username}</h1>
       <NewGameButton onClick={handleNewGame} />
       <GameHistoryDropdown games={userData.games} />
+      <button onClick={handleLogout}>Logout</button>
+    </div>
+  ) : (
+    <div>
+      <h2>Please login</h2>
+      <LoginForm onSubmit={handleLoginSuccess} />
     </div>
   );
 }
