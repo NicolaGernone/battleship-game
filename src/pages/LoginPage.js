@@ -13,7 +13,7 @@ function LoginPage() {
 
   const handleSignupSuccess = (userData) => {
     localStorage.setItem('user', JSON.stringify(userData));
-    navigate('/profile'); 
+    navigate('/login'); 
   };
 
   return (

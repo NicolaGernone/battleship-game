@@ -72,8 +72,12 @@ export const fetchUsers = async () => {
  * @param {number} user_id - The ID of the user.
  * @returns {Object} user profile.
  */
-export const fetchUserProfile = async (userId) => {
-  const response = await fetch(`${API_URL}/users/${userId}`);
+export const fetchUserProfile = async (user) => {
+  const response = await fetch(`${API_URL}/users/${user.user.id}/`, {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  });
 
   if (!response.ok) {
       throw new Error('Failed to fetch user profile');
@@ -93,10 +97,11 @@ export const fetchUserProfile = async (userId) => {
  * @returns {Object} The response from the server.
  */
 export const createGame = async (player1, player2) => {
-  const response = await fetch(`${API_URL}/games/`, {
+  const response = await fetch(`${API_URL}/gameplays/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
     body: JSON.stringify({ player1, player2 }),
   });
@@ -113,7 +118,11 @@ export const createGame = async (player1, player2) => {
  * @returns {Array} List of games.
  */
 export const fetchGames = async () => {
-  const response = await fetch(`${API_URL}/games/`);
+  const response = await fetch(`${API_URL}/gameplays/`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
 
   if (!response.ok) {
     throw new Error('Failed to fetch games');
@@ -133,10 +142,11 @@ export const fetchGames = async () => {
  * @returns {Object} The response from the server.
  */
 export const submitShipPositions = async (gameId, shipPositions) => {
-  const response = await fetch(`${API_URL}/games/${gameId}/position-ships/`, {
+  const response = await fetch(`${API_URL}/gameplays/${gameId}/position-ships/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
     body: JSON.stringify({ shipPositions }),
   });
@@ -156,10 +166,11 @@ export const submitShipPositions = async (gameId, shipPositions) => {
  * @returns {Object} The response from the server, indicating hit/miss and the updated board state.
  */
 export const makeAttack = async (gameId, row, col) => {
-  const response = await fetch(`${API_URL}/games/${gameId}/attack/`, {
+  const response = await fetch(`${API_URL}/gameplays/${gameId}/attack/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
     body: JSON.stringify({ row, col }),
   });
@@ -177,7 +188,13 @@ export const makeAttack = async (gameId, row, col) => {
  * @returns {Object} The current game state.
  */
 export const fetchGameState = async (gameId) => {
-  const response = await fetch(`${API_URL}/games/${gameId}/state/`);
+  const response = await fetch(`${API_URL}/games/${gameId}/state/`,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    }
+  );
 
   if (!response.ok) {
     throw new Error('Failed to fetch game state');

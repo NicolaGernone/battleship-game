@@ -1,0 +1,31 @@
+.profile-page {
+    /* Adjust styles for the main profile page container */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .game-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .game-history {
+    margin-top: 20px;
+    position: relative; 
+  }
+  
+  .game-history button {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }

@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { createUser } from '../services/api';
+import '../styles/login.css';
 
-function SignupForm({ onSubmit, onClose }) {
+function SignupForm({ onSubmit, onClose, onToggle }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userData = await createUser( username, password ); // Call createUser function from api.js
-      onSubmit(userData); // Pass user data to parent component
+      const userData = await createUser( username, password );
+      onSubmit(userData);
     } catch (error) {
       alert('Signup failed. Please check your credentials.');
     }
@@ -46,6 +47,7 @@ function SignupForm({ onSubmit, onClose }) {
           Signup
         </button>
       </form>
+      <p onClick={onToggle}>Or Login</p>
     </div>
   );
 }
