@@ -21,7 +21,7 @@ function ProfilePage() {
         const userProfileData = await fetchUserProfile(user);
         setUserData(userProfileData);
 
-        const gameplayData = await fetchGames();
+        const gameplayData = await fetchGames(user.token);
         setGameplays(gameplayData);
       } catch (error) {
         alert('Failed to load user data or game history.');
@@ -33,7 +33,9 @@ function ProfilePage() {
 
   const handleNewGame = async () => {
     try {
-      const newGame = await createGame(userData.username, 'Player_2_auto');
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user) throw new Error('User not logged in');
+      const newGame = await createGame(userData.username, 'Player_2_auto', user.token);
       navigate(`/game/${newGame.id}`);
     } catch (error) {
       alert('Failed to start a new game.');

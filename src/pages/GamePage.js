@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { fetchGameState, makeAttack } from '../services/api';
 import Board from '../components/Board';
 import ShipPlacement from '../components/ShipPlacement';
+import '../styles/game.css';
 
 function GamePage({ match }) {
   const gameId = match.params.gameId;
@@ -26,12 +27,13 @@ function GamePage({ match }) {
   }, [gameId]);
 
   const handlePositionShips = (positions) => {
-    setPlayerBoard(placeShipsOnBoard(playerBoard, positions));
+    const newBoard = placeShipsOnBoard(playerBoard, positions);
+    setPlayerBoard(newBoard);
     setShipsPlaced(true);
   };
 
   const handleStartGame = () => {
-    // Additional logic if needed to start the game
+    // Send a request
     setShipsPlaced(true);
   };
 
@@ -44,7 +46,7 @@ function GamePage({ match }) {
     try {
       const result = await makeAttack(gameId, row, col);
       setOpponentBoard(result.opponentBoard);
-      setPlayerBoard(result.playerBoard); // Update player board if needed
+      setPlayerBoard(result.playerBoard);
     } catch (error) {
       alert('Failed to make the attack.');
     }
@@ -71,7 +73,8 @@ function createEmptyBoard() {
 }
 
 function placeShipsOnBoard(board, positions) {
-  // Implement logic to update the board with the ships
+  // validate and place ships on the board
+  // ...
   return board;
 }
 

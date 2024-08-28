@@ -54,20 +54,6 @@ export const createUser = async (username, password) => {
 };
 
 /**
- * Fetches the list of all users.
- * @returns {Array} List of users.
- */
-export const fetchUsers = async () => {
-  const response = await fetch(`${API_URL}/users/`);
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch users');
-  }
-
-  return response.json();
-};
-
-/**
  * Fetches the user profile.
  * @param {number} user_id - The ID of the user.
  * @returns {Object} user profile.
@@ -96,12 +82,12 @@ export const fetchUserProfile = async (user) => {
  * @param {string} player2 - Username of player 2.
  * @returns {Object} The response from the server.
  */
-export const createGame = async (player1, player2) => {
+export const createGame = async (player1, player2, token) => {
   const response = await fetch(`${API_URL}/gameplays/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ player1, player2 }),
   });
@@ -117,10 +103,10 @@ export const createGame = async (player1, player2) => {
  * Fetches the list of all games.
  * @returns {Array} List of games.
  */
-export const fetchGames = async () => {
+export const fetchGames = async (token) => {
   const response = await fetch(`${API_URL}/gameplays/`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -141,12 +127,12 @@ export const fetchGames = async () => {
  * @param {Object} shipPositions - The positions of the ships.
  * @returns {Object} The response from the server.
  */
-export const submitShipPositions = async (gameId, shipPositions) => {
+export const submitShipPositions = async (gameId, shipPositions, token) => {
   const response = await fetch(`${API_URL}/gameplays/${gameId}/position-ships/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ shipPositions }),
   });
@@ -165,12 +151,12 @@ export const submitShipPositions = async (gameId, shipPositions) => {
  * @param {number} col - The column number to attack.
  * @returns {Object} The response from the server, indicating hit/miss and the updated board state.
  */
-export const makeAttack = async (gameId, row, col) => {
+export const makeAttack = async (gameId, row, col, token) => {
   const response = await fetch(`${API_URL}/gameplays/${gameId}/attack/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ row, col }),
   });
@@ -187,11 +173,11 @@ export const makeAttack = async (gameId, row, col) => {
  * @param {number} gameId - The ID of the game.
  * @returns {Object} The current game state.
  */
-export const fetchGameState = async (gameId) => {
+export const fetchGameState = async (gameId, token) => {
   const response = await fetch(`${API_URL}/games/${gameId}/state/`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${token}`,
       },
     }
   );
